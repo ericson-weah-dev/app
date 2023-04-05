@@ -20,6 +20,7 @@ module.exports = app => {
 
     const Route = new Router(app)
 
+    Route.get('/', index)
     Route.get('/users', index)
     Route.post('/users', store)
     Route.get('/users/:id/show', show)
