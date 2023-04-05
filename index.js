@@ -16,27 +16,32 @@
  * @classdesc App class
  */
 
-
-// const Router = require('../routes')
+const Router = require('./routes')
 
 class App extends require('./modules/server') {
 
-    constructor(options = {}) {
+    constructor(...arrayOfObjects) {
 
-        super({ objectMode: true, encoding: 'utf-8', autoDestroy: true })
-
-        Object.keys(options).forEach(key => { this[key] = options[key] })
-
+        super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
+    
+        arrayOfObjects.forEach(option => {
+            if(Object.keys(option).length > 0){
+                Object.keys(option).forEach((key) => { if(!this[key]) this[key] = option[key];})
+            }
+        });
+    
         // auto bind methods
-        this.autobind(App)
-            //Set maximum number of listeners to infinity
-        this.setMaxListeners(Infinity)
+        this.autobind(App);
+        // auto invoke methods
+        this.autoinvoker(App);
+        // add other classes method if methods do not already exist. Argument order matters!
+        // this.methodizer(..classList);
+        //Set the maximum number of listeners to infinity
+        this.setMaxListeners(Infinity);
 
-
-       // Mount Router to app
-        // Router({ app: this })
-
-    }
+         // Mount Router to app
+        Router({ app: this })
+      }
 
 
     split(string = '', delimiters = '') {
