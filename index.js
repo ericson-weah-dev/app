@@ -1,64 +1,169 @@
-#!/usr/bin/env node
+'use strict'
 
-"use strict";
-
-/**
- * Author
- *  @name Ericson S. Weah  
- *  @email afrosintech@gmail.com
- *  @website https://www.afrosintech.com
- *  @github https://github.com/afrosintech
- *  @gitlab https://gitlab.com/afrosintech
- *  @npm https://www.npmjs.com/~afrosintech
- *  @phone +1.385.204.5167
- *
- * @module Entry
+/** 
+ *    @author Ericson Weah Dev  
+ *    email: ericson.weah@ericsonweah.dev
+ *    github: https://github.com/ericson-weah-dev
+ *    phone: +1.385.204.5167
+ *    Website: https://www.ericsonweah.dev
+ * 
+ * @module App
  * @kind class
- *
- * @extends Base
- * @requires Base
- *
- * @classdesc Entry class
+ * 
+ * @extends Server
+ * @requires Server
+ * 
+ * @classdesc App class
  */
 
 
-class Entry extends require("../base") {
+// const Router = require('../routes')
 
-  constructor(...arrayOfObjects) {
+class App extends require('./modules/server') {
 
-    super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
+    constructor(options = {}) {
 
-    arrayOfObjects.forEach(option => {
-        if(Object.keys(option).length > 0){
-            Object.keys(option).forEach((key) => { if(!this[key]) this[key] = option[key];})
-        }
-    });
+        super({ objectMode: true, encoding: 'utf-8', autoDestroy: true })
 
-    // auto bind methods
-    this.autobind(Entry);
-    // auto invoke methods
-    this.autoinvoker(Entry);
-    // add other classes method if methods do not already exist. Argument order matters!
-    // this.methodizer(..classList);
-    //Set the maximum number of listeners to infinity
-    this.setMaxListeners(Infinity);
-  }
-  /**
-   * @name autoinvoked
-   * @function
-   *
-   * @param {Object|Function|Class} className the class whose methods to be bound to it
-   *
-   * @description auto sets the list of methods to be auto invoked
-   *
-   * @return does not return anything
-   *
-   */
+        Object.keys(options).forEach(key => { this[key] = options[key] })
 
-     autoinvoked() {
-      return [];
+        // auto bind methods
+        this.autobind(App)
+            //Set maximum number of listeners to infinity
+        this.setMaxListeners(Infinity)
+
+
+       // Mount Router to app
+        // Router({ app: this })
+
     }
 
-}
 
-module.exports =  Entry;
+    split(string = '', delimiters = '') {
+        return typeof(string) === 'string' && string.trim().length > 0 ? string.split(delimiters).filter(str => str !== '').map(str => str.trim()) : []
+    }
+
+    // Route Parametrization:  The heart of route parameters
+    routeParameters(trimmedPath, request, response, path, fn) {
+
+        /// no repeating
+        let router = {}
+        if (path === trimmedPath) {
+            return router[trimmedPath] = fn(request, response)
+        } else {
+
+            let paths = this.split(path, '/')
+            let trimepaths = this.split(trimmedPath, '/')
+
+            for (let ph of paths) {
+                if (ph.includes(':') === true) {
+                    let value = trimepaths[paths.indexOf(ph)]
+                    paths[paths.indexOf(ph)] = value
+                }
+            }
+            if (JSON.stringify(paths) === JSON.stringify(trimepaths)) {
+                let keysArray = path.split('/')
+                for (let key of keysArray) {
+                    if (key.includes(':')) {
+                        if (isNaN(paths[keysArray.indexOf(key)]) === false) {
+                            request.params[key.substring(1)] = parseInt(paths[keysArray.indexOf(key)])
+                        } else {
+                            request.params[key.substring(1)] = paths[keysArray.indexOf(key)]
+                        }
+                    }
+                }
+                return router[trimmedPath] = fn(request, response)
+            }
+        }
+    }
+
+    // HTTP Methods Routing : GET Method
+    get(path, fn = () => {}) {
+        if (!path || path.trim().length === 0) return
+        this.on('GET', (trimmedPath, request, response) => {
+            return this.routeParameters(trimmedPath, request, response, path, fn)
+        })
+    }
+     // HTTP Methods Routing : POST Method
+    post(path, fn = () => {}) {
+        if (!path || path.trim().length === 0) return
+        this.on('POST', (trimmedPath, request, response) => {
+            return this.routeParameters(trimmedPath, request, response, path, fn)
+        })
+    }
+     // HTTP Methods Routing : PUT Method
+    put(path, fn = () => {}) {
+        if (!path || path.trim().length === 0) return
+        this.on('PUT', (trimmedPath, request, response) => {
+            return this.routeParameters(trimmedPath, request, response, path, fn)
+        })
+    }
+     // HTTP Methods Routing : DELETE Method
+    delete(path, fn = () => {}) {
+        if (!path || path.trim().length === 0) return
+        this.on('DELETE', (trimmedPath, request, response) => {
+            return this.routeParameters(trimmedPath, request, response, path, fn)
+        })
+    }
+     // HTTP Methods Routing : PATCH Method
+    patch(path, fn = () => {}) {
+        if (!path || path.trim().length === 0) return
+        this.on('PATCH', (trimmedPath, request, response) => {
+            return this.routeParameters(trimmedPath, request, response, path, fn)
+        })
+    }
+    use(object = {}) {
+        if (typeof object !== 'object') return
+        Object.keys(object).forEach(key => {
+            if (this.hasOwnProperty(key) === false) {
+                this[key] = object[key]
+            }
+        })
+    }
+    autobindMethodExclude(request, ...classNamesList) {
+
+        if (classNamesList.length === 0) return
+        if (typeof request !== 'object') return
+
+        let list = ['constructor', 'requestMethodList', 'autobindRequestMethods',
+            'autobinder', 'autobind', 'methodizer', 'autoinvoker', 'autoinvoked',
+            '_transform', '_flush', '_final'
+        ]
+        classNamesList.forEach(className => {
+            for (let method of Object.getOwnPropertyNames(className.prototype)) {
+                if (request[method] === undefined || !className.prototype[method]) {
+                    if (typeof className.prototype[method] === 'function') {
+                        if (list.includes(method) === false) {
+                            request[method] = className.prototype[method]
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    autobindMethodInclude(request, ...classNamesList) {
+
+        if (classNamesList.length === 0) return
+        if (typeof request !== 'object') return
+
+        let list = ['constructor', 'requestMethodList', 'autobindRequestMethods',
+            'autobinder', 'autobind', 'methodizer', 'autoinvoker', 'autoinvoked',
+            '_transform', '_flush', '_final'
+        ]
+
+        classNamesList.forEach(className => {
+            for (let method of Object.getOwnPropertyNames(className.prototype)) {
+                if (request[method] === undefined || !className.prototype[method]) {
+                    if (typeof className.prototype[method] === 'function') {
+                        if (list.includes(method) === true) {
+                            request[method] = className.prototype[method]
+                        }
+                    }
+                }
+            }
+        })
+    }
+}
+//  Exports a new App (Singleton)
+module.exports = () => new App
