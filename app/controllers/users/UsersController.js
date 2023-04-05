@@ -87,7 +87,9 @@ class UsersController extends require("../../../modules/base") {
        * @return {Object}  user object
        *
        */
-      async show(req, res, next) {}
+      async show(req, res, next) {
+        res.status(200).send(req.params.id);
+      }
     
       /**
        * @name edit

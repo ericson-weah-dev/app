@@ -23,7 +23,7 @@ module.exports = app => {
     Route.get('/', index)
     Route.get('/users', index)
     Route.post('/users', store)
-    Route.get('/users/:id/show', show)
+    Route.get('/users/:id', show)
     Route.get('/users/:id/edit', edit)
     Route.put('/users/:id/update', update)
     Route.delete('/users/:id/delete', destroy)
