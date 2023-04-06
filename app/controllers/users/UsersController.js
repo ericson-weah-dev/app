@@ -54,6 +54,7 @@ class UsersController extends require("../../../modules/base") {
 
      async index(req, res, next) {
         res.status(200).send({home: 'Welcome Home'});
+  
      }
     
     

@@ -108,10 +108,13 @@ class HTTPController extends require("../base") {
      for(let i = 0; i < command.split('/').length; i++){
         path += `../`
      }
+
+     let requireBasePath =  '../../' +path + 'modules/base';
      path += 'Controller';
      const name = command.split('/').pop();
      const filepath = './templates'
-     return {name, path, filepath};
+   
+     return {name, path, filepath, requireBasePath};
     
   }
  fromTemplate(command, options = this.tplOptions(command)){

@@ -1,20 +1,20 @@
-module.exports = (options = {}) => `
+
 "use strict";
 
 /**
  * @author Ericson S. Weah  <ericson.weah@gmail.com> <https://github.com/eweah>  <+1.385.204.5167>
  *
- * @module ${options.name}
+ * @module PostController
  * @kind class
  *
  * @extends Controller
  * @requires Controller
  *
- * @classdesc ${options.name} class
+ * @classdesc PostController class
  */
 
 
-class ${options.name} extends require("${options.requireBasePath}") {
+class PostController extends require("controller") {
 
   constructor(...arrayOfObjects) {
 
@@ -27,9 +27,9 @@ class ${options.name} extends require("${options.requireBasePath}") {
     });
 
     // auto bind methods
-    this.autobind(${options.name});
+    this.autobind(PostController);
     // auto invoke methods
-    this.autoinvoker(${options.name});
+    this.autoinvoker(PostController);
     // add other classes method if methods do not already exist. Argument order matters!
     // this.methodizer(..classList);
     //Set the maximum number of listeners to infinity
@@ -137,5 +137,4 @@ class ${options.name} extends require("${options.requireBasePath}") {
 
 }
 
-module.exports = ${options.name};
-`
+module.exports = PostController;

@@ -14,8 +14,9 @@
  * @classdesc CLI class
  */
 
-const Controller = require('../modules/http-controller/src');
-class CLI extends require("../modules/base") {
+const ErrorNotification = require('../')
+
+class CLI extends require("../../base") {
 
   constructor(...arrayOfObjects) {
 
@@ -41,40 +42,10 @@ class CLI extends require("../modules/base") {
   command(index = 2){
     return process.argv[index]
  }
-
-//  commands(){
-//   switch(this.command(2)){
-//       case "make":
-//         const {make} = new Controller ({command: this.command(2)})
-//           if(this.command(3)){
-//             if(this.command(4)){
-//               console.log('EXTRA OPTIONS ARE NOT ALLOWED');
-//             }else{
-//               make(this.command(3))
-//             }
-//           }else{
-//             console.log('make controller command')
-//           }
-//           break;
-//       default: 
-//           console.log("invalid command ...");
-//           break;
-//   }
-// }
  commands(){
   switch(this.command(2)){
       case "make":
-          if(this.command(3)){
-            switch(this.command(3)){
-              case "controller":
-                const {make} = new Controller ({command: this.command(3)})
-                make(this.command(4))
-                break;
-              default: 
-                console.log("invalid command ...");
-                break;
-            }
-          }
+        console.log('make man page');
         break;
       case "man":
         console.log('make man page');
@@ -83,10 +54,12 @@ class CLI extends require("../modules/base") {
         console.log("help man page");
         break;
       default: 
-        console.log("invalid command ...");
+      const {simpleNotification} = new ErrorNotification({command: this.command(2)});
+      simpleNotification(this.command(2));
         break;
   }
 }
+
   init(){
     this.commands();
   }
