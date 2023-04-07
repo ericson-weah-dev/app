@@ -78,15 +78,19 @@ class CLI extends require("../modules/base") {
                 make(this.command(4))
               case "route":
                 const httpRoute = new HTTPRoute({ command: this.command(3) });
-                if (this.command(4)) {
-                  if (this.command(5)) {
-                    httpRoute.makeWith(this.command(4), this.command(5));
-                  } else {
-                   httpRoute.make(this.command(4));
-                  }
-                } else {
-                  console.log("invalid command");
-                }
+                if(!this.command(4)){
+                  return console.log(Red("rouute name needed"))
+                 }
+                 httpRoute.make(this.command(4));
+                // if (this.command(4)) {
+                //   if (this.command(5)) {
+                //     httpRoute.makeWith(this.command(4), this.command(5));
+                //   } else {
+                //    httpRoute.make(this.command(4));
+                //   }
+                // } else {
+                //   console.log("invalid command");
+                // }
                 break;
               default: 
                 console.log("invalid command ...");
