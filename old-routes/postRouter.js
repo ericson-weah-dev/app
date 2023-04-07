@@ -1,4 +1,6 @@
-'use strict';
+
+"use strict";
+
 /*
 |--------------------------------------------------------------------------
 | User Web Routes
@@ -10,10 +12,11 @@
 | Now create something great!
 |
 */
-
-module.exports = app => {
-        
-    require("./post")(app);        
-    require("./userRouter")(app);        
-    
+module.exports = app => {    
+    app.get("/posts", (req, res, next) => {});
+    app.post("/posts", (req, res, next) => {});
+    app.get("/posts/:id", (req, res, next) => {});
+    app.post('/posts/:id', (req, res, next) => {})
+    app.put("/posts/:id", (req, res, next) => {});
+    app.delete("/posts/:id", (req, res, next) => {});  
 }

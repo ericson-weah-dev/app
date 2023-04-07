@@ -20,9 +20,9 @@ const {
 } = require("fs");
 const { join } = require("path");
 const { Readable } = require("stream");
-const { readdirRecursive } = require("lib");
+const { readdirRecursive } = require("../lib");
 
-const HTTPController = require("http-controller");
+const HTTPController = require("../http-controller");
 
 const httpController = new HTTPController();
 
@@ -129,6 +129,7 @@ class HTTPRoute extends require("../base") {
     for (let i = 0; i < command.split("/").length; i++) {
       path += `../`;
     }
+    let routerPath = `${path}modules/router`;
     path += "../src/Router";
     const name = command.split("/").pop();
     const filepath = "./src/templates/route";
@@ -143,7 +144,7 @@ class HTTPRoute extends require("../base") {
     }
     //  endpoint = endpoint.split('Router')[0].toLowerCase();
     if (!endpoint.endsWith("s")) endpoint = endpoint + "s";
-    return { name, path, filepath, endpoint };
+    return { name, path, filepath, endpoint,routerPath };
   }
 
   async withTplOptions(routerCommand, controllerCommand, path = ``) {
@@ -152,6 +153,7 @@ class HTTPRoute extends require("../base") {
       path += `../`;
       depth += `../`;
     }
+    let routerPath = `${depth}modules/router`;
     path += "../src/Router";
     const name = routerCommand.split("/").pop();
     const filepath = "./src/templates/withcontroller";
@@ -171,6 +173,7 @@ class HTTPRoute extends require("../base") {
     router.name = name;
     router.path = path;
     router.endpoint = endpoint;
+    // router.routerPath = routerPath;
 
     const controller = {};
     controller.name = controllerCommand
@@ -194,7 +197,7 @@ class HTTPRoute extends require("../base") {
       });
       await this.withCommand(controllerCommand);
     }
-    return { router, filepath, controller, details };
+    return { router, filepath, controller, details,routerPath };
   }
 
   fromTemplate(command, options = this.tplOptions(command)) {
@@ -265,7 +268,7 @@ writeable.write(`'use strict';
 | Here is where you can register users routes for your application. These
 | routes are first mounted to the Router (see Router Class in /src/Router.js)
 | and then to the  App (See  App Class in /src/App.js)
-| Now create something great!
+| Now create something great === first!
 |
 */\n`)
 
@@ -287,6 +290,7 @@ readdirRecursive(path)
    }
 
    writeable.write(`\n`)
+   writeable.write(`const Router = require('../router')\n`)
    writeable.write(`module.exports = app => {
     `)
     writeable.write(`\n    `)
@@ -322,7 +326,7 @@ readdirRecursive(path)
 | Here is where you can register users routes for your application. These
 | routes are first mounted to the Router (see Router Class in /src/Router.js)
 | and then to the  App (See  App Class in /src/App.js)
-| Now create something great!
+| Now create something great! ====> second
 |
 */\n`)
       for(let file of files){
@@ -338,6 +342,7 @@ readdirRecursive(path)
 
 
        writeable.write(`\n`)
+       writeable.write(`const Router = require('../router')\n`)
        writeable.write(`module.exports = app => {
         `)
         writeable.write(`\n    `)

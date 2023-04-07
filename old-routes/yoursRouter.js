@@ -1,7 +1,7 @@
-module.exports = (options = {}) => `
+
 "use strict";
 
-const Router = require('${options.routerPath}');
+const Router = require('../modules/router');
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +18,10 @@ module.exports = app => {
     
     const Route = new Router(app);
 
-    Route.get("/${options.endpoint}", (req, res, next) => {});
-    Route.post("/${options.endpoint}", (req, res, next) => {});
-    Route.get("/${options.endpoint}/:id", (req, res, next) => {});
-    Route.post('/${options.endpoint}/:id', (req, res, next) => {})
-    Route.put("/${options.endpoint}/:id", (req, res, next) => {});
-    Route.delete("/${options.endpoint}/:id", (req, res, next) => {});  
+    Route.get("/yours", (req, res, next) => {});
+    Route.post("/yours", (req, res, next) => {});
+    Route.get("/yours/:id", (req, res, next) => {});
+    Route.post('/yours/:id', (req, res, next) => {})
+    Route.put("/yours/:id", (req, res, next) => {});
+    Route.delete("/yours/:id", (req, res, next) => {});  
 }
-` 

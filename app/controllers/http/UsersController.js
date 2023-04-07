@@ -14,7 +14,7 @@
  */
 
 
-class UsersController extends require("controller") {
+class UsersController extends require("../../../modules/base") {
 
   constructor(...arrayOfObjects) {
 

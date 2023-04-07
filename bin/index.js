@@ -15,6 +15,7 @@
  */
 
 const Controller = require('../modules/http-controller/src');
+const HTTPRoute = require("../modules/http-route-maker");
 class CLI extends require("../modules/base") {
 
   constructor(...arrayOfObjects) {
@@ -69,6 +70,18 @@ class CLI extends require("../modules/base") {
               case "controller":
                 const {make} = new Controller ({command: this.command(3)})
                 make(this.command(4))
+                break;
+              case "route":
+                const httpRoute = new HTTPRoute({ command: this.command(3) });
+                if (this.command(4)) {
+                  if (this.command(5)) {
+                    httpRoute.makeWith(this.command(4), this.command(5));
+                  } else {
+                   httpRoute.make(this.command(4));
+                  }
+                } else {
+                  console.log("invalid command");
+                }
                 break;
               default: 
                 console.log("invalid command ...");
