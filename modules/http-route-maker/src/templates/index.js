@@ -14,7 +14,7 @@ module.exports = (options = {}) => `
  */
 
 
-class ${options.name} extends require("../../base") {
+class ${options.name} extends require("stream").Transform {
 
   constructor(...arrayOfObjects) {
 

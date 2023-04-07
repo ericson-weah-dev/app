@@ -13,6 +13,8 @@
 
 module.exports = app => {
         
+    require("./blog/chatRouter")(app);        
+    require("./blog/postRouter")(app);        
     require("./post")(app);        
     require("./userRouter")(app);        
     

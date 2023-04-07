@@ -16,6 +16,7 @@
 
 const Controller = require('../modules/http-controller/src');
 const HTTPRoute = require("../modules/http-route-maker");
+const Couleur = require("../modules/couleurs");
 class CLI extends require("../modules/base") {
 
   constructor(...arrayOfObjects) {
@@ -63,14 +64,18 @@ class CLI extends require("../modules/base") {
 //   }
 // }
  commands(){
+  const {Red} = new Couleur
   switch(this.command(2)){
       case "make":
           if(this.command(3)){
             switch(this.command(3)){
               case "controller":
+
+               if(!this.command(4)){
+                return console.log(Red("controller name needed"))
+               }
                 const {make} = new Controller ({command: this.command(3)})
                 make(this.command(4))
-                break;
               case "route":
                 const httpRoute = new HTTPRoute({ command: this.command(3) });
                 if (this.command(4)) {

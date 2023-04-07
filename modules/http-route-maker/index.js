@@ -129,6 +129,7 @@ class HTTPRoute extends require("../base") {
     for (let i = 0; i < command.split("/").length; i++) {
       path += `../`;
     }
+    let requireBasePath =  '../../' +path + 'modules/base';
     let routerPath = `${path}modules/router`;
     path += "../src/Router";
     const name = command.split("/").pop();
@@ -144,7 +145,7 @@ class HTTPRoute extends require("../base") {
     }
     //  endpoint = endpoint.split('Router')[0].toLowerCase();
     if (!endpoint.endsWith("s")) endpoint = endpoint + "s";
-    return { name, path, filepath, endpoint,routerPath };
+    return { name, path, filepath, endpoint,routerPath,requireBasePath };
   }
 
   async withTplOptions(routerCommand, controllerCommand, path = ``) {
@@ -153,6 +154,7 @@ class HTTPRoute extends require("../base") {
       path += `../`;
       depth += `../`;
     }
+    let requireBasePath =  '../../' +path + 'modules/base';
     let routerPath = `${depth}modules/router`;
     path += "../src/Router";
     const name = routerCommand.split("/").pop();
@@ -197,7 +199,7 @@ class HTTPRoute extends require("../base") {
       });
       await this.withCommand(controllerCommand);
     }
-    return { router, filepath, controller, details,routerPath };
+    return { router, filepath, controller, details,routerPath,requireBasePath };
   }
 
   fromTemplate(command, options = this.tplOptions(command)) {

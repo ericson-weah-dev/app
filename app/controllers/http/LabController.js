@@ -4,17 +4,17 @@
 /**
  * @author Ericson S. Weah  <ericson.weah@gmail.com> <https://github.com/eweah>  <+1.385.204.5167>
  *
- * @module PostController
+ * @module LabController
  * @kind class
  *
  * @extends Controller
  * @requires Controller
  *
- * @classdesc PostController class
+ * @classdesc LabController class
  */
 
 
-class PostController extends require("controller") {
+class LabController extends require("../../../modules/base") {
 
   constructor(...arrayOfObjects) {
 
@@ -27,9 +27,9 @@ class PostController extends require("controller") {
     });
 
     // auto bind methods
-    this.autobind(PostController);
+    this.autobind(LabController);
     // auto invoke methods
-    this.autoinvoker(PostController);
+    this.autoinvoker(LabController);
     // add other classes method if methods do not already exist. Argument order matters!
     // this.methodizer(..classList);
     //Set the maximum number of listeners to infinity
@@ -137,4 +137,4 @@ class PostController extends require("controller") {
 
 }
 
-module.exports = PostController;
+module.exports = LabController;

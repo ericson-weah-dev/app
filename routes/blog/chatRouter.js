@@ -1,6 +1,8 @@
 
 "use strict";
 
+const Router = require('../../modules/router');
+
 /*
 |--------------------------------------------------------------------------
 | User Web Routes
@@ -12,11 +14,14 @@
 | Now create something great!
 |
 */
-module.exports = app => {    
-    app.get("/chats", (req, res, next) => {});
-    app.post("/chats", (req, res, next) => {});
-    app.get("/chats/:id", (req, res, next) => {});
-    app.post('/chats/:id', (req, res, next) => {})
-    app.put("/chats/:id", (req, res, next) => {});
-    app.delete("/chats/:id", (req, res, next) => {});  
+module.exports = app => {  
+    
+    const Route = new Router(app);
+
+    Route.get("/chats", (req, res, next) => {});
+    Route.post("/chats", (req, res, next) => {});
+    Route.get("/chats/:id", (req, res, next) => {});
+    Route.post('/chats/:id', (req, res, next) => {})
+    Route.put("/chats/:id", (req, res, next) => {});
+    Route.delete("/chats/:id", (req, res, next) => {});  
 }

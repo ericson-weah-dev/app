@@ -1,9 +1,7 @@
 
 "use strict";
 
-const PostController = require('../app/controllers/http/PostController');
-
-const {destroy,index,store,show,edit,update} = new PostController;
+const Router = require('../../modules/router');
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +14,14 @@ const {destroy,index,store,show,edit,update} = new PostController;
 | Now create something great!
 |
 */
-module.exports = app => {
+module.exports = app => {  
     
-    app.delete("/posts/:id", destroy);
-    app.get("/posts", index);
-    app.post("/posts", store);
-    app.get("/posts/:id", show);
-    app.put("/posts/:id", edit);
-    app.post("/posts/:id", update);
+    const Route = new Router(app);
 
+    Route.get("/posts", (req, res, next) => {});
+    Route.post("/posts", (req, res, next) => {});
+    Route.get("/posts/:id", (req, res, next) => {});
+    Route.post('/posts/:id', (req, res, next) => {})
+    Route.put("/posts/:id", (req, res, next) => {});
+    Route.delete("/posts/:id", (req, res, next) => {});  
 }
